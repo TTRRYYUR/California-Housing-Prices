@@ -8,7 +8,7 @@ def load_data(filepath):
 
 
 def clean_data(df):
-    """Очистка данных и приведение к стандартному виду(duration удаляем потому что происходит data leaking)"""
+    """Очистка данных и приведение к стандартному виду"""
     df = df.copy()
     valid_mask = (
         (df["total_bedrooms"] <= df["total_rooms"]) &
