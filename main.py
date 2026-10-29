@@ -35,7 +35,6 @@ def main():
               f"Test RMSE: ${eval_result['rmse']:,.0f},"
               f"Test mape: {eval_result['mape']:.2%}")
 
-
         results.append({
             "name": name,
             "params": train_result["params"],
@@ -48,7 +47,7 @@ def main():
             "predictions": eval_result["predictions"],
         })
 
-    result_df = pd.DataFrame(results).sort_values("test_r2", ascending=False)
+    result_df = pd.DataFrame(results).sort_values("cv_r2", ascending=False)
     print("\nИтоговые результаты:")
     print(result_df[["name", "cv_r2", "test_r2", "test_mae"]].to_string(index=False))
 
@@ -70,7 +69,9 @@ def main():
 
     plot_feature_importance(best_result["pipeline"], X_test, y_test)
 
+    joblib.dump({row["name"]: row["pipeline"] for _, row in result_df.iterrows()}, "all_models.pkl")
     joblib.dump(best_result["pipeline"], "best_model.pkl")
+
 
 if __name__ == "__main__":
     main()
